@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +18,12 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<Alarm> alarmList = new ArrayList<>();
+    private ArrayList<Alarm> alarmList;
     private Context context;
 
+
     public RecyclerViewAdapter(Context context, ArrayList<Alarm> alarmList) {
+        Log.d(TAG, "RecyclerViewAdapter Constructor Called");
         this.context = context;
         this.alarmList = alarmList;
     }
@@ -28,6 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: Called");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alarm_item, parent,
                 false);
         ViewHolder viewHolder = new ViewHolder(view);
@@ -39,8 +44,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: Called");
 
-        holder.AlarmName.setText(alarmList.get(position).alarmName);
-        holder.DateOutput.setText(alarmList.get(position).triggerDate.toString());
+        holder.alarmName.setText(alarmList.get(position).name);
+        holder.dateOutput.setText(alarmList.get(position).calendar.getTime().toString());
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Deleting alarm: " + alarmList.get(position).name);
+
+                alarmList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(0, alarmList.size());
+            }
+        });
     }
 
 
@@ -51,20 +67,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView AlarmName;
-        TextView DateLabel;
-        TextView DateOutput;
-        TextView TimeLabel;
-        TextView TimeOutput;
+        TextView alarmName;
+        TextView dateOutput;
+        ImageView deleteButton;
+        RelativeLayout parentLayout;
 
         public ViewHolder(View alarmView) {
             super(alarmView);
 
-            AlarmName = alarmView.findViewById(R.id.parent_layout);
-            DateLabel = alarmView.findViewById(R.id.date_label);
-            DateOutput = alarmView.findViewById(R.id.date_out);
-            TimeLabel = alarmView.findViewById(R.id.time_label);
-            TimeOutput = alarmView.findViewById(R.id.time_out);
+            alarmName = alarmView.findViewById(R.id.alarm_name);
+            dateOutput = alarmView.findViewById(R.id.date_out);
+            deleteButton = alarmView.findViewById(R.id.delete_button);
+            parentLayout = alarmView.findViewById(R.id.parent_layout);
         }
     }
 }

@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="125dp">
 
     <TextView
         android:id="@+id/alarm_name"
-        android:layout_width="371dp"
+        android:layout_width="356dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:layout_marginLeft="7dp"
@@ -23,25 +23,12 @@
         android:layout_width="43dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/alarm_name"
-        android:layout_marginStart="-350dp"
-        android:layout_marginLeft="-350dp"
-        android:layout_marginTop="9dp"
-        android:layout_toEndOf="@+id/alarm_name"
-        android:layout_toRightOf="@+id/alarm_name"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_toRightOf="@+id/imageView2"
         android:text="Date"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/time_label"
-        android:layout_width="43dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/alarm_name"
-        android:layout_marginStart="157dp"
-        android:layout_marginLeft="157dp"
-        android:layout_marginTop="9dp"
-        android:layout_toEndOf="@+id/date_label"
-        android:layout_toRightOf="@+id/date_label"
-        android:text="Time"
         android:textSize="16sp" />
 
     <ImageView
@@ -54,26 +41,34 @@
 
     <TextView
         android:id="@+id/date_out"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
+        android:layout_width="343dp"
+        android:layout_height="36dp"
         android:layout_below="@+id/date_label"
-        android:layout_marginStart="-43dp"
-        android:layout_marginLeft="-43dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/date_label"
-        android:layout_toRightOf="@+id/date_label"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="9dp"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_toRightOf="@+id/imageView2"
         android:text="Date Output" />
 
-    <TextView
-        android:id="@+id/time_out"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
-        android:layout_below="@+id/time_label"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/date_out"
-        android:layout_toRightOf="@+id/date_out"
-        android:text="Time Output" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="70dp"
+        android:layout_height="67dp"
+        android:layout_below="@+id/alarm_name"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+
+    <ImageView
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@+id/alarm_name"
+        android:layout_toRightOf="@+id/alarm_name"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </RelativeLayout>
