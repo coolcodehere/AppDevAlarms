@@ -2,38 +2,34 @@ package computerorg.alarmclockapp;
 
 import android.app.AlarmManager;
 import android.util.Log;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.InputMismatchException;
-import java.util.regex.Pattern;
+import java.util.Date;
 
 public class Alarm {
     private final String TAG = "ALARM";
     public String name;
-    public int type;
     public Calendar calendar = Calendar.getInstance();
     private AlarmManager manager;
+    public int type;
 
-    // dateTime should be passed in in the format "DD\MM\YYYY-HH:MM:SS"
+    // dateTime should be passed in in the format "DD/MM/YYYY-HH:MM:SS"
     public Alarm(String name, String dateTime) {
-        Log.d(TAG, "constructor called: " + dateTime);
+        Log.d(TAG, "constructor called");
 
-        // This is broken right now, just make sure date and time is correct when it gets sent here.
-        Pattern p = Pattern.compile("^[0-9][0-9]\\/[0-9][0-9]\\/[0-9][0-9][0-9][0-9]-[0-9][0-9]:" +
-                "[0-9][0-9]:[0-9][0-9]$");
-//        if (!p.matcher(dateTime).matches()) {
-//            throw new InputMismatchException();
-//        }
-
+        // TODO: Move this to where the date and time are parsed and send date here so an error message
+        //   can be shown in the app.
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        try {
+            Date date = formatter.parse(dateTime);
+            assert date != null;
+            calendar.setTime(date);
+        } catch (ParseException e) {
+            Log.d(TAG, "Bad Date: " + dateTime);
+        }
         this.name = name;
-        String date = dateTime.split("-")[0];
-        String time = dateTime.split("-")[1];
 
-        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date.split("/")[0]));
-        calendar.set(Calendar.MONTH, Integer.parseInt(date.split("/")[1]));
-        calendar.set(Calendar.YEAR, Integer.parseInt(date.split("/")[2]));
-        calendar.set(Calendar.HOUR, Integer.parseInt(time.split(":")[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(time.split(":")[0]));
-        calendar.set(Calendar.SECOND, Integer.parseInt(time.split(":")[0]));
+
     }
 }
