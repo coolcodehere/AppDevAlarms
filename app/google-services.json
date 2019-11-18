@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "170372282316",
+    "firebase_url": "https://alarmclock-259322.firebaseio.com",
+    "project_id": "alarmclock-259322",
+    "storage_bucket": "alarmclock-259322.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170372282316:android:0c02958d6a6f73b0cacf69",
+        "android_client_info": {
+          "package_name": "computerorg.alarmclockapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170372282316-rtf7n1t3qrakm1iqllkridmgoek8daj9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWQA0m3y2QS-rfUNLVbnH4dNw_2T7U4-I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170372282316-rtf7n1t3qrakm1iqllkridmgoek8daj9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

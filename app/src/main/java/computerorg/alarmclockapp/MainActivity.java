@@ -1,12 +1,8 @@
 package computerorg.alarmclockapp;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.View;
 
@@ -22,21 +18,14 @@ public class MainActivity extends AppCompatActivity {
     static final int CREATE_ALARM = 1;
 
     private final String TAG = "MainActivity";
-    private RecyclerViewAdapter adapter;
     private ArrayList<Alarm> alarmList = new ArrayList<>();
+    private RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, alarmList);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: started app");
-
-        initSavedAlarms();
-        initRecyclerView();
-
-        // Register for broadcasts when a device is discovered.
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(receiver, filter);
 
         FloatingActionButton addAlarmButton = findViewById(R.id.add_alarm);
         addAlarmButton.setOnClickListener(new View.OnClickListener() {
@@ -47,39 +36,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, CREATE_ALARM);
             }
         });
+
+        initSavedAlarms();
+        initRecyclerView();
     }
-
-
-    protected void onDestroy() {
-        super.onDestroy();
-
-        // Don't forget to unregister the ACTION_FOUND receiver.
-        unregisterReceiver(receiver);
-    }
-
-
-    // This is for bluetooth but I have no clue how it does anything.
-    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Discovery has found a device. Get the BluetoothDevice
-                // object and its info from the Intent.
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-            }
-        }
-    };
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == CREATE_ALARM) {
             ArrayList<String> list = data.getStringArrayListExtra("Data");
             Log.d(TAG, list.get(1) + ", " + list.get(2));
 
-            Alarm alarm = new Alarm(list.get(0), list.get(1) + " " + list.get(2));
+            Alarm alarm = new Alarm(list.get(0), list.get(1), list.get(2));
+            FirebaseManager.addAlarm(alarm);
             alarmList.add(alarm);
             adapter.notifyItemRangeChanged(0, alarmList.size());
         } else {
@@ -87,11 +58,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void initSavedAlarms() {
-        // Make this later  :)
+        this.alarmList = FirebaseManager.getEntries();
+        adapter.notifyItemRangeChanged(0, this.alarmList.size());
     }
-
 
     private void initRecyclerView() {
         Log.d(TAG, "initRecyclerView: Loading recycler view");

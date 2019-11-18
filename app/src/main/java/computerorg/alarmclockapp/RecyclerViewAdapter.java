@@ -45,7 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "onBindViewHolder: Called");
 
         holder.alarmName.setText(alarmList.get(position).name);
-        holder.dateOutput.setText(alarmList.get(position).calendar.getTime().toString());
+        holder.dateOutput.setText(alarmList.get(position).date + " " + alarmList.get(position).time);
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
