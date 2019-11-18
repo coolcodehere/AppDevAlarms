@@ -9,27 +9,29 @@ import java.util.Date;
 
 public class Alarm {
     private final String TAG = "ALARM";
+    private String dbReference;
     public String name;
-    public Calendar calendar = Calendar.getInstance();
-    private AlarmManager manager;
-    public int type;
+    String date;
+    String time;
+
+    public Alarm() {
+
+    }
 
     // dateTime should be passed in in the format "DD/MM/YYYY-HH:MM:SS"
-    public Alarm(String name, String dateTime) {
-        Log.d(TAG, "constructor called");
+    Alarm(String name, String date, String time) {
+        Log.d(TAG, "constructor");
 
-        // TODO: Move this to where the date and time are parsed and send date here so an error message
-        //   can be shown in the app.
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        try {
-            Date date = formatter.parse(dateTime);
-            assert date != null;
-            calendar.setTime(date);
-        } catch (ParseException e) {
-            Log.d(TAG, "Bad Date: " + dateTime);
-        }
         this.name = name;
+        this.date = date;
+        this.time = time;
+    }
 
+    void setDbReference(String dbReference) {
+        this.dbReference = dbReference;
+    }
 
+    String getDbReference() {
+        return this.dbReference;
     }
 }
