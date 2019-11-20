@@ -1,7 +1,7 @@
-package computerorg.alarmclockapp;
+package appdev.alarmclockapp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,29 +11,34 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import computerorg.alarmclockapp.R;
 
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
     private static final String TAG = "RecyclerViewAdapter";
     private ArrayList<Alarm>  alarmList;
+    Context context;
 
 
     RecyclerViewAdapter(Context context, ArrayList<Alarm> alarmList) {
         Log.d(TAG, "RecyclerViewAdapter Constructor Called");
         this.alarmList = alarmList;
+        this.context = context;
     }
 
 
-    void addAndNotify(String name, String date, String time) {
+    void addAndNotify(String name, String description, Calendar calendar) {
         System.out.println(alarmList);
 
-        Alarm alarm = new Alarm(name, date, time);
+        Alarm alarm = new Alarm(this.context, name, description, calendar);
         alarmList.add(alarm);
-        FirebaseManager.addAlarm(alarm);
         this.notifyItemInserted(alarmList.size() - 1);
     }
 
@@ -49,7 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             position = 0;
         }
 
-        FirebaseManager.removeAlarm(alarmList.get(position).getDbReference());
+        alarmList.get(position).cancelAlarm();
         alarmList.remove(position);
         this.notifyItemRemoved(position);
     }
@@ -65,13 +70,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: Called");
 
         holder.alarmName.setText(alarmList.get(position).name);
-        holder.dateOutput.setText(alarmList.get(position).date + " " + alarmList.get(position).time);
+        holder.dateOutput.setText(alarmList.get(position).calendar.getTime().toString());
+        holder.alarmDesc.setText(alarmList.get(position).description);
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +97,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView alarmName;
+        TextView alarmDesc;
         TextView dateOutput;
         ImageView deleteButton;
         RelativeLayout parentLayout;
@@ -100,6 +106,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(alarmView);
 
             alarmName = alarmView.findViewById(R.id.alarm_name);
+            alarmDesc = alarmView.findViewById(R.id.alarm_desc);
             dateOutput = alarmView.findViewById(R.id.date_out);
             deleteButton = alarmView.findViewById(R.id.delete_button);
             parentLayout = alarmView.findViewById(R.id.parent_layout);
