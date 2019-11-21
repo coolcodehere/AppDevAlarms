@@ -186,10 +186,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "onLocationChanged");
             latitude.setText(String.valueOf(location.getLatitude()));
             longitude.setText(String.valueOf(location.getLongitude()));
-            locationAlarmLat.setText("-");
-            locationAlarmLong.setText("-");
+
             if (!locationTimeOut.getText().toString().equals("No Location Alarm Set")) {
                 locationTimeOut.setText("No Location Alarm Set");
+                locationAlarmLat.setText("-");
+                locationAlarmLong.setText("-");
             }
 
             Intent intent = new Intent(MainActivity.this, AlertReceiver.class);
