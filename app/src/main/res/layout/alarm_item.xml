@@ -89,4 +89,15 @@
         android:layout_toRightOf="@+id/alarm_name"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
+    <TextView
+        android:id="@+id/repeat_out"
+        android:layout_width="195dp"
+        android:layout_height="21dp"
+        android:layout_alignTop="@+id/date_label"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/date_label"
+        android:layout_toRightOf="@+id/date_label" />
+
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package appdev.alarmclockapp;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,10 +35,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    void addAndNotify(String name, String description, Calendar calendar) {
+    void addAndNotify(Context context, String name, String description, int repeat,
+            Calendar calendar) {
         System.out.println(alarmList);
 
-        Alarm alarm = new Alarm(this.context, name, description, calendar);
+        Alarm alarm = new Alarm(context, name, description, calendar, repeat);
         alarmList.add(alarm);
         this.notifyItemInserted(alarmList.size() - 1);
     }
@@ -77,7 +79,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.alarmName.setText(alarmList.get(position).name);
         holder.dateOutput.setText(alarmList.get(position).calendar.getTime().toString());
         holder.alarmDesc.setText(alarmList.get(position).description);
-
+        if (alarmList.get(position).repeatMinutes > 0) {
+            holder.repeatOutput.setText("Repeats Every " + alarmList.get(position).repeatMinutes + " Minutes");
+        }
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +103,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView alarmName;
         TextView alarmDesc;
         TextView dateOutput;
+        TextView repeatOutput;
         ImageView deleteButton;
         RelativeLayout parentLayout;
 
@@ -110,6 +115,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             dateOutput = alarmView.findViewById(R.id.date_out);
             deleteButton = alarmView.findViewById(R.id.delete_button);
             parentLayout = alarmView.findViewById(R.id.parent_layout);
+            repeatOutput = alarmView.findViewById(R.id.repeat_out);
         }
     }
 }

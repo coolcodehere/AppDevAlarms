@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 
@@ -19,22 +20,22 @@ public class Alarm {
     public String description;
     protected Calendar calendar;
     private int id = (int) System.currentTimeMillis();
-    private int repeatMinutes = -1;
+    public int repeatMinutes;
     AlarmManager alarmManager;
     Context context;
 
 
-    Alarm(Context context, String name, String description, Calendar calendar) {
+    Alarm(Context context, String name, String description, Calendar calendar, int repeatMinutes) {
         Log.d(TAG, "constructor");
         this.context = context;
         this.alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        this.repeatMinutes = repeatMinutes;
 
         if (name.equals("")) {
             this.name = "Alarm";
         } else {
             this.name = name;
         }
-
 
         if (description.equals("")) {
             this.description = "No Description";
@@ -58,7 +59,7 @@ public class Alarm {
         }
 
         System.out.println(c.getTimeInMillis());
-        if (this.repeatMinutes < 0) {
+        if (this.repeatMinutes <= 0) {
             Log.d(TAG, "startAlarm: Timer");
             this.alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
         } else {
